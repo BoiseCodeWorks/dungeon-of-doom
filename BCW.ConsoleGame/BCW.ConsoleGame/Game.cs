@@ -1,4 +1,5 @@
-﻿using BCW.ConsoleGame.Models;
+﻿using BCW.ConsoleGame.Events;
+using BCW.ConsoleGame.Models;
 using BCW.ConsoleGame.Models.Scenes;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace BCW.ConsoleGame
 {
-    public enum Direction { North, South, East, West};
-
     public class Game
     {
         public List<IScene> Scenes { get; set; }
@@ -32,11 +31,11 @@ namespace BCW.ConsoleGame
             }
         }
 
-        private void move(MapPosition fromPosition, Direction direction)
+        private void sceneNavigated(object sender, NavigationEventArgs args)
         {
-            var toPosition = new MapPosition(fromPosition.X, fromPosition.Y);
+            var toPosition = new MapPosition(args.Scene.MapPosition.X, args.Scene.MapPosition.Y);
 
-            switch (direction)
+            switch (args.Direction)
             {
                 case Direction.North:
                     toPosition.Y -= 1;
@@ -55,26 +54,42 @@ namespace BCW.ConsoleGame
                     break;
             }
 
-            var scene = Scenes.FirstOrDefault(s => s.MapPosition.X == toPosition.X && s.MapPosition.Y == toPosition.Y);
+            var nextScene = Scenes.FirstOrDefault(s => s.MapPosition.X == toPosition.X && s.MapPosition.Y == toPosition.Y);
 
-            if (scene != null)
+            if (nextScene != null)
             {
-                scene.Enter();
+                nextScene.Enter();
             }
         }
 
         private void loadScenes()
         {
-            var scene1 = new Scene
+            Scenes.Add(new Scene
+            (
+                "Entry Way",
+                "You're standing in a small empty room with a door on the north wall.",
+                new MapPosition(9, 5),
+                new List<ICommand>
+                {
+                    new NavigationCommand { Keys = "n", Description = "Go North", Direction = Direction.North }
+                }
+            ));
+
+            Scenes.Add(new Scene
+            (
+                "Room 1",
+                "You're standing in a small empty room with a door on the south wall.",
+                new MapPosition(9, 4),
+                new List<ICommand>
+                {
+                    new NavigationCommand { Keys = "s", Description = "Go South", Direction = Direction.South }
+                }
+            ));
+
+            foreach (var scene in Scenes)
             {
-                Title = "Entry Way",
-                Description = "You're standing in a small empty room with a door on the north wall.",
-                MapPosition = new MapPosition(9, 5)
-            };
-
-            scene1.Commands.Add(new Command { Keys = "n", Description = "Go North", Action = () => { move(scene1.MapPosition, Direction.North); } });
-            Scenes.Add(scene1);
-
+                scene.Navigated += sceneNavigated;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BCW.ConsoleGame.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace BCW.ConsoleGame.Models.Scenes
 {
     public interface IScene
     {
+        event EventHandler<NavigationEventArgs> Navigated;
+
         string Title { get; set; }
         string Description { get; set; }
         bool Visited { get; set; }

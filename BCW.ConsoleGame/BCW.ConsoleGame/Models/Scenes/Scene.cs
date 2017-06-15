@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BCW.ConsoleGame.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,27 @@ namespace BCW.ConsoleGame.Models.Scenes
 {
     public class Scene : IScene
     {
+        public event EventHandler<NavigationEventArgs> Navigated;
+
         public string Title { get; set; }
         public string Description { get; set; }
         public bool Visited { get; set; }
         public MapPosition MapPosition { get; set; }
         public List<ICommand> Commands { get; set; }
 
-        public Scene()
+        public Scene(string title, string description, MapPosition position) 
+            :this(title, description, position, new List<ICommand>())
         {
-            Commands = new List<ICommand>();
+        }
+
+        public Scene(string title, string description, MapPosition position, List<ICommand> commands)
+        {
+            Title = title;
+            Description = description;
+            MapPosition = position;
+            Commands = commands;
+
+            setNavigationEvents();
         }
 
         public virtual void Enter()
@@ -57,6 +70,19 @@ namespace BCW.ConsoleGame.Models.Scenes
             Console.WriteLine("");
             if (error.Length > 0) Console.WriteLine(error);
             Console.Write("Choose an action: ");
+        }
+
+        private void setNavigationEvents()
+        {
+            var navCommands = Commands.Where(c => c is INavigationCommand);
+
+            foreach(var command in navCommands)
+            {
+                command.Action = () =>
+                {
+                    Navigated?.Invoke(this, new NavigationEventArgs(this, (command as NavigationCommand).Direction));
+                };
+            }
         }
     }
 }
