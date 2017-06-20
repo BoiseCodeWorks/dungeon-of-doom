@@ -1,8 +1,11 @@
 ﻿using BCW.ConsoleGame.Events;
 using BCW.ConsoleGame.Models;
 using BCW.ConsoleGame.Models.Scenes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,32 +67,34 @@ namespace BCW.ConsoleGame
 
         private void loadScenes()
         {
-            Scenes.Add(new Scene
-            (
-                "Entry Way",
-                "You're standing in a small empty room with a door on the north wall.",
-                new MapPosition(9, 5),
-                new List<ICommand>
-                {
-                    new NavigationCommand { Keys = "n", Description = "Go North", Direction = Direction.North }
-                }
-            ));
-
-            Scenes.Add(new Scene
-            (
-                "Room 1",
-                "You're standing in a small empty room with a door on the south wall.",
-                new MapPosition(9, 4),
-                new List<ICommand>
-                {
-                    new NavigationCommand { Keys = "s", Description = "Go South", Direction = Direction.South }
-                }
-            ));
+            Scenes = loadData();
 
             foreach (var scene in Scenes)
             {
                 scene.Navigated += sceneNavigated;
             }
+        }
+
+        private List<IScene> loadData()
+        {
+            var scenes = new List<IScene>();
+            var dataFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Scenes.json");
+
+            using (StreamReader reader = File.OpenText(dataFilePath))
+            {
+                var sceneData = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+
+                var scenesJson = (JArray)sceneData.GetValue("Scenes");
+
+                foreach(JToken sceneJson in scenesJson)
+                {
+                    var scene = JsonConvert.DeserializeObject<Scene>(sceneJson.ToString());
+
+                    scenes.Add(scene);
+                }
+            }
+
+            return scenes;
         }
     }
 }
