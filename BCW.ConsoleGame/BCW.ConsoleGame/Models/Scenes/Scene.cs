@@ -1,4 +1,5 @@
 ﻿using BCW.ConsoleGame.Events;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace BCW.ConsoleGame.Models.Scenes
 {
+    [JsonObject(MemberSerialization.OptOut)]
     public class Scene : IScene
     {
         public event EventHandler<NavigationEventArgs> Navigated;
@@ -15,7 +17,13 @@ namespace BCW.ConsoleGame.Models.Scenes
         public string Description { get; set; }
         public bool Visited { get; set; }
         public MapPosition MapPosition { get; set; }
+
+        [JsonIgnore]
         public List<ICommand> Commands { get; set; }
+
+        public Scene()
+        {
+        }
 
         public Scene(string title, string description, MapPosition position) 
             :this(title, description, position, new List<ICommand>())
@@ -62,9 +70,12 @@ namespace BCW.ConsoleGame.Models.Scenes
             Console.WriteLine("Actions");
             Console.WriteLine(new String('-', "Actions".Length));
 
-            foreach (var command in Commands.OrderBy(c => c.Keys))
+            if (Commands != null)
             {
-                Console.WriteLine("{0} = {1}", command.Keys, command.Description);
+                foreach (var command in Commands.OrderBy(c => c.Keys))
+                {
+                    Console.WriteLine("{0} = {1}", command.Keys, command.Description);
+                }
             }
 
             Console.WriteLine("");
