@@ -1,0 +1,13 @@
+﻿{
+  "defaultAssembly": "BCW.ConsoleGame",
+  "components": [
+    {
+      "type": "BCW.ConsoleGame.JsonData.Provider, BCW.ConsoleGame.JsonData",
+      "services": [
+        {
+          "type": "BCW.ConsoleGame.Data.IDataProvider"
+        }
+      ]
+    }
+  ]
+}

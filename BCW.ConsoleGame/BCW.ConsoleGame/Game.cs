@@ -1,9 +1,8 @@
-﻿using BCW.ConsoleGame.Events;
+﻿using BCW.ConsoleGame.Data;
+using BCW.ConsoleGame.Events;
 using BCW.ConsoleGame.Models;
 using BCW.ConsoleGame.Models.Commands;
 using BCW.ConsoleGame.Models.Scenes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,10 +14,13 @@ namespace BCW.ConsoleGame
 {
     public class Game
     {
+        public IDataProvider DataProvider { get; set; }
         public List<IScene> Scenes { get; set; }
 
-        public Game()
+        public Game(IDataProvider dataProvider)
         {
+            DataProvider = dataProvider;
+
             Scenes = new List<IScene>();
             loadScenes();
 
@@ -89,31 +91,7 @@ namespace BCW.ConsoleGame
 
         private List<IScene> loadData()
         {
-            var scenes = new List<IScene>();
-            var dataFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Scenes.json");
-
-            using (StreamReader reader = File.OpenText(dataFilePath))
-            {
-                var sceneData = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
-
-                var scenesJson = (JArray)sceneData.GetValue("Scenes");
-
-                scenes = scenesJson.Select(s => new Scene
-                (
-                    (string)s["Title"],
-                    (string)s["Description"],
-                    new MapPosition((int)s["MapPosition"]["X"], (int)s["MapPosition"]["Y"]),
-                    (s["NavigationCommands"] as JArray).Select(c => new NavigationCommand
-                    {
-                        Keys = (string)c["Keys"],
-                        Description = (string)c["Description"],
-                        Direction = (Direction)Enum.Parse(typeof(Direction), (string)c["Direction"])
-                    }).ToList<ICommand>(),
-                    new List<ICommand> { new GameCommand { Keys = "X", Description = "Exit The Game"} }
-                )).ToList<IScene>();
-            }
-
-            return scenes;
+            return DataProvider.LoadScenes();
         }
     }
 }
