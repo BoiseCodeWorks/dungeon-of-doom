@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BCW.ConsoleGame.Models.Scenes
+namespace BCW.ConsoleGame.Models.Commands
 {
-    public interface INavigationCommand
+    public class NavigationCommand : Command, INavigationCommand
     {
-        Direction Direction { get; set; }
+        public Direction Direction { get; set; }
     }
 }

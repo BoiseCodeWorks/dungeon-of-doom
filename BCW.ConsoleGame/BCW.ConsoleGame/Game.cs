@@ -1,5 +1,6 @@
 ﻿using BCW.ConsoleGame.Events;
 using BCW.ConsoleGame.Models;
+using BCW.ConsoleGame.Models.Commands;
 using BCW.ConsoleGame.Models.Scenes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -31,6 +32,16 @@ namespace BCW.ConsoleGame
             if (scene != null)
             {
                 scene.Enter();
+            }
+        }
+
+        private void gameMenuSelected(object sender, GameEventArgs args)
+        {
+            switch (args.Keys.ToLower())
+            {
+                case "x":
+                    Environment.Exit(0);
+                    break;
             }
         }
 
@@ -71,6 +82,7 @@ namespace BCW.ConsoleGame
 
             foreach (var scene in Scenes)
             {
+                scene.GameMenuSelected += gameMenuSelected;
                 scene.Navigated += sceneNavigated;
             }
         }
@@ -86,12 +98,19 @@ namespace BCW.ConsoleGame
 
                 var scenesJson = (JArray)sceneData.GetValue("Scenes");
 
-                foreach(JToken sceneJson in scenesJson)
-                {
-                    var scene = JsonConvert.DeserializeObject<Scene>(sceneJson.ToString());
-
-                    scenes.Add(scene);
-                }
+                scenes = scenesJson.Select(s => new Scene
+                (
+                    (string)s["Title"],
+                    (string)s["Description"],
+                    new MapPosition((int)s["MapPosition"]["X"], (int)s["MapPosition"]["Y"]),
+                    (s["NavigationCommands"] as JArray).Select(c => new NavigationCommand
+                    {
+                        Keys = (string)c["Keys"],
+                        Description = (string)c["Description"],
+                        Direction = (Direction)Enum.Parse(typeof(Direction), (string)c["Direction"])
+                    }).ToList<ICommand>(),
+                    new List<ICommand> { new GameCommand { Keys = "X", Description = "Exit The Game"} }
+                )).ToList<IScene>();
             }
 
             return scenes;

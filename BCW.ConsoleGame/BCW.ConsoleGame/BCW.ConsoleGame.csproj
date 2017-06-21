@@ -45,14 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\GameEventArgs.cs" />
     <Compile Include="Events\NavigationEventArgs.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Models\Commands\GameCommand.cs" />
+    <Compile Include="Models\Commands\IGameCommand.cs" />
     <Compile Include="Models\MapPosition.cs" />
-    <Compile Include="Models\Scenes\Command.cs" />
-    <Compile Include="Models\Scenes\ICommand.cs" />
-    <Compile Include="Models\Scenes\INavigationCommand.cs" />
+    <Compile Include="Models\Commands\Command.cs" />
+    <Compile Include="Models\Commands\ICommand.cs" />
+    <Compile Include="Models\Commands\INavigationCommand.cs" />
     <Compile Include="Models\Scenes\IScene.cs" />
-    <Compile Include="Models\Scenes\NavigationCommand.cs" />
+    <Compile Include="Models\Commands\NavigationCommand.cs" />
     <Compile Include="Models\Scenes\Scene.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

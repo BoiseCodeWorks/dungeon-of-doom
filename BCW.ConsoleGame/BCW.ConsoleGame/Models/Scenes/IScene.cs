@@ -1,4 +1,5 @@
 ﻿using BCW.ConsoleGame.Events;
+using BCW.ConsoleGame.Models.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace BCW.ConsoleGame.Models.Scenes
 {
     public interface IScene
     {
+        event EventHandler<GameEventArgs> GameMenuSelected;
         event EventHandler<NavigationEventArgs> Navigated;
 
         string Title { get; set; }

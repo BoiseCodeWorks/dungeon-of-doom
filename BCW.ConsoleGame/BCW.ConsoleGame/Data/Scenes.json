@@ -11,10 +11,9 @@
         "X": 9,
         "Y": 5
       },
-      "Commands": [
+      "NavigationCommands": [
         {
-          "Type": "Navigation",
-          "Keys": "n",
+          "Keys": "N",
           "Description": "Go North",
           "Direction": "North"
         }
@@ -27,10 +26,10 @@
         "X": 9,
         "Y": 4
       },
-      "Commands": [
+      "NavigationCommands": [
         {
           "Type": "Navigation",
-          "Keys": "s",
+          "Keys": "S",
           "Description": "Go South",
           "Direction": "South"
         }
