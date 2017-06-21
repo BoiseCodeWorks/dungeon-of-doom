@@ -28,6 +28,8 @@ namespace BCW.ConsoleGame
             var container = builder.Build();
 
             var game = new Game(container.Resolve<IDataProvider>());
+
+            Console.WriteLine("this is {0} and that is {1}", "thing1", "thing2");
         }
     }
 }

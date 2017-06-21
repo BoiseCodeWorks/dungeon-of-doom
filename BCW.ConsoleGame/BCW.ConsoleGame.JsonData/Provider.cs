@@ -16,16 +16,32 @@ namespace BCW.ConsoleGame.JsonData
 {
     public class Provider : IDataProvider
     {
-        public List<IScene> LoadScenes()
+        private JObject gameData;
+
+        public MapPosition StartPosition { get; set; }
+        public List<IScene> Scenes { get; set; }
+
+        public Provider()
+        {
+            Scenes = loadScenes();
+            StartPosition = loadStartPosition();
+        }
+
+        public void SaveGameState()
+        {
+            saveGameData();
+        }
+
+        private List<IScene> loadScenes()
         {
             var scenes = new List<IScene>();
             var dataFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Scenes.json");
 
             using (StreamReader reader = File.OpenText(dataFilePath))
             {
-                var sceneData = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+                gameData = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
 
-                var scenesJson = (JArray)sceneData.GetValue("Scenes");
+                var scenesJson = (JArray)gameData.GetValue("Scenes");
 
                 scenes = scenesJson.Select(s => new Scene
                 (
@@ -43,6 +59,50 @@ namespace BCW.ConsoleGame.JsonData
             }
 
             return scenes;
+        }
+
+        private MapPosition loadStartPosition()
+        {
+            return new MapPosition((int)gameData["StartPosition"]["X"], (int)gameData["StartPosition"]["Y"]);
+        }
+
+        private void saveGameData()
+        {
+            gameData = JObject.FromObject(new
+            {
+                StartPosition = new
+                {
+                    X = StartPosition.X,
+                    Y = StartPosition.Y
+                },
+                Scenes = from s in Scenes
+                         select new
+                         {
+                             Title = s.Title,
+                             Description = s.Description,
+                             MapPosition = new
+                             {
+                                 X = s.MapPosition.X,
+                                 Y = s.MapPosition.Y
+                             },
+                             NavigationCommands = from c in s.Commands.Where(c => c is INavigationCommand)
+                                                  select new
+                                                  {
+                                                      Keys = c.Keys,
+                                                      Description = c.Description,
+                                                      Direction = Enum.GetName(typeof(Direction), (c as INavigationCommand).Direction)
+                                                  }
+                         }
+            });
+
+            var fileData = Encoding.ASCII.GetBytes(gameData.ToString());
+
+            var dataFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Scenes.json");
+
+            using (FileStream writer = File.Open(dataFilePath, FileMode.Truncate))
+            {
+                writer.Write(fileData, 0, fileData.Length);
+            }
         }
     }
 }

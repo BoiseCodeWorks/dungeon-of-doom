@@ -21,10 +21,11 @@ namespace BCW.ConsoleGame
         {
             DataProvider = dataProvider;
 
-            Scenes = new List<IScene>();
-            loadScenes();
+            Scenes = DataProvider.Scenes;
 
-            gotoPosition(new MapPosition(9, 5));
+            subscribeToEvents();
+
+            gotoPosition(DataProvider.StartPosition);
         }
 
         void gotoPosition(MapPosition position)
@@ -42,6 +43,7 @@ namespace BCW.ConsoleGame
             switch (args.Keys.ToLower())
             {
                 case "x":
+                    DataProvider.SaveGameState();
                     Environment.Exit(0);
                     break;
             }
@@ -74,14 +76,13 @@ namespace BCW.ConsoleGame
 
             if (nextScene != null)
             {
+                DataProvider.StartPosition = nextScene.MapPosition;
                 nextScene.Enter();
             }
         }
 
-        private void loadScenes()
+        private void subscribeToEvents()
         {
-            Scenes = loadData();
-
             foreach (var scene in Scenes)
             {
                 scene.GameMenuSelected += gameMenuSelected;
@@ -89,9 +90,5 @@ namespace BCW.ConsoleGame
             }
         }
 
-        private List<IScene> loadData()
-        {
-            return DataProvider.LoadScenes();
-        }
     }
 }

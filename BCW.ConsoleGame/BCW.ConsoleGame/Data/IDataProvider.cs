@@ -1,4 +1,5 @@
-﻿using BCW.ConsoleGame.Models.Scenes;
+﻿using BCW.ConsoleGame.Models;
+using BCW.ConsoleGame.Models.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace BCW.ConsoleGame.Data
 {
     public interface IDataProvider
     {
-        List<IScene> LoadScenes();
+        MapPosition StartPosition { get; set; }
+        List<IScene> Scenes { get; set; }
+
+        void SaveGameState();
     }
 }
