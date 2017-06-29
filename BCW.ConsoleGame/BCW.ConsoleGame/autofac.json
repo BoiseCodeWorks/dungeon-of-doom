@@ -8,6 +8,14 @@
           "type": "BCW.ConsoleGame.Data.IDataProvider"
         }
       ]
+    },
+    {
+      "type": "BCW.ConsoleGame.User.ConsoleInterface, BCW.ConsoleGame",
+      "services": [
+        {
+          "type": "BCW.ConsoleGame.User.IUserInterface"
+        }
+      ]
     }
   ]
 }

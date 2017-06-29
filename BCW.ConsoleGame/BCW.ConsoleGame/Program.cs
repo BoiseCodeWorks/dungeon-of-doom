@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Configuration;
 using BCW.ConsoleGame.Data;
+using BCW.ConsoleGame.User;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,7 @@ namespace BCW.ConsoleGame
 
             var container = builder.Build();
 
-            var game = new Game(container.Resolve<IDataProvider>());
-
-            Console.WriteLine("this is {0} and that is {1}", "thing1", "thing2");
+            var game = new Game(container.Resolve<IDataProvider>(), container.Resolve<IUserInterface>());
         }
     }
 }
