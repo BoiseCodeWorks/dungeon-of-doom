@@ -3,6 +3,7 @@ using BCW.ConsoleGame.Events;
 using BCW.ConsoleGame.Models;
 using BCW.ConsoleGame.Models.Commands;
 using BCW.ConsoleGame.Models.Scenes;
+using BCW.ConsoleGame.User;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,11 +16,13 @@ namespace BCW.ConsoleGame
     public class Game
     {
         public IDataProvider DataProvider { get; set; }
+        public IUserInterface UserInterface { get; set; }
         public List<IScene> Scenes { get; set; }
 
-        public Game(IDataProvider dataProvider)
+        public Game(IDataProvider dataProvider, IUserInterface userInterface)
         {
             DataProvider = dataProvider;
+            UserInterface = userInterface;
 
             Scenes = DataProvider.Scenes;
 
@@ -85,6 +88,7 @@ namespace BCW.ConsoleGame
         {
             foreach (var scene in Scenes)
             {
+                scene.UserInterface = UserInterface;
                 scene.GameMenuSelected += gameMenuSelected;
                 scene.Navigated += sceneNavigated;
             }
