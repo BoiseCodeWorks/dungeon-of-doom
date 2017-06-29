@@ -8,18 +8,23 @@ using System.Threading.Tasks;
 using BCW.ConsoleGame.Models;
 using BCW.ConsoleGame.Models.Commands;
 using BCW.ConsoleGame.Events;
+using BCW.ConsoleGame.User;
+using Moq;
 
 namespace BCW.ConsoleGame.Tests
 {
     [TestFixture]
     public class SceneTests
     {
+        private Mock<IUserInterface> mockUserInterface;
         private Scene initializedScene;
         private Scene constructedScene;
 
         [SetUp]
         public void Setup()
         {
+            mockUserInterface = new Mock<IUserInterface>();
+
             initializedScene = new Scene
             {
                 Title = "Test Scene",
@@ -44,18 +49,19 @@ namespace BCW.ConsoleGame.Tests
                 {
                     new NavigationCommand
                     {
-                        Keys = "x",
-                        Description = "Exit",
+                        Keys = "n",
+                        Description = "Go North",
                         Direction = Direction.North
                     },
                     new GameCommand
                     {
-                        Keys = "q",
+                        Keys = "x",
                         Description = "Quit"
                     }
                 }
             );
 
+            constructedScene.UserInterface = mockUserInterface.Object;
             constructedScene.Navigated += sceneNavigated;
             constructedScene.GameMenuSelected += sceneGameMenuSelected;
         }
@@ -97,6 +103,29 @@ namespace BCW.ConsoleGame.Tests
             Assert.DoesNotThrow(() => { constructedScene.Commands[1].Action(); });
         }
 
+        [Test]
+        public void EnterDisplaysDetails()
+        {
+            mockUserInterface.Setup(ui => ui.GetInput("Choose an action: ")).Returns("x");
+
+            constructedScene.Enter();
+
+            mockUserInterface.Verify(ui => ui.Clear());
+            mockUserInterface.Verify(ui => ui.Display("Test Scene"));
+            mockUserInterface.Verify(ui => ui.Display("This is a test scene"));
+        }
+
+        [Test]
+        public void EnterDisplaysCommandChoices()
+        {
+            mockUserInterface.Setup(ui => ui.GetInput("Choose an action: ")).Returns("x");
+
+            constructedScene.Enter();
+
+            mockUserInterface.Verify(ui => ui.Display("n = Go North"));
+            mockUserInterface.Verify(ui => ui.Display("x = Quit"));
+        }
+
         private void sceneNavigated(object sender, NavigationEventArgs e)
         {
             if (e.Direction != Direction.North)
@@ -107,7 +136,7 @@ namespace BCW.ConsoleGame.Tests
 
         private void sceneGameMenuSelected(object sender, GameEventArgs e)
         {
-            if (e.Keys != "q")
+            if (e.Keys != "x")
             {
                 throw new ArgumentException();
             }
