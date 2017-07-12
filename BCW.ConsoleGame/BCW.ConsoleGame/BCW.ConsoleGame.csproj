@@ -99,8 +99,12 @@
     <Compile Include="Events\GameEventArgs.cs" />
     <Compile Include="Events\NavigationEventArgs.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Models\Characters\ICharacter.cs" />
+    <Compile Include="Models\Characters\Monster.cs" />
     <Compile Include="Models\Commands\GameCommand.cs" />
     <Compile Include="Models\Commands\IGameCommand.cs" />
+    <Compile Include="Models\Composite.cs" />
+    <Compile Include="Models\IComposite.cs" />
     <Compile Include="Models\MapPosition.cs" />
     <Compile Include="Models\Commands\Command.cs" />
     <Compile Include="Models\Commands\ICommand.cs" />

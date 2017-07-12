@@ -9,8 +9,36 @@ using System.Threading.Tasks;
 
 namespace BCW.ConsoleGame.Models.Scenes
 {
-    public class Scene : IScene
+    public class Scene : Composite, IScene
     {
+        public Scene()
+        {
+            items = new List<IComposite>();
+        }
+
+        public Scene(string title, string description, MapPosition position)
+            : this(title, description, position, new List<ICommand>())
+        {
+        }
+
+        public Scene(string title, string description, MapPosition position, params List<ICommand>[] commands)
+        {
+            items = new List<IComposite>();
+
+            Title = title;
+            Description = description;
+            MapPosition = position;
+            Commands = new List<ICommand>();
+
+            foreach (var collection in commands)
+            {
+                Commands.AddRange(collection);
+            }
+
+            setCommandEvents();
+        }
+
+        #region IScene Implementation
         public event EventHandler<GameEventArgs> GameMenuSelected;
         public event EventHandler<NavigationEventArgs> Navigated;
 
@@ -21,30 +49,6 @@ namespace BCW.ConsoleGame.Models.Scenes
         public MapPosition MapPosition { get; set; }
 
         public List<ICommand> Commands { get; set; }
-
-        public Scene()
-        {
-        }
-
-        public Scene(string title, string description, MapPosition position) 
-            :this(title, description, position, new List<ICommand>())
-        {
-        }
-
-        public Scene(string title, string description, MapPosition position, params List<ICommand>[] commands)
-        {
-            Title = title;
-            Description = description;
-            MapPosition = position;
-            Commands = new List<ICommand>();
-
-            foreach(var collection in commands)
-            {
-                Commands.AddRange(collection);
-            }
-
-            setCommandEvents();
-        }
 
         public virtual void Enter()
         {
@@ -90,7 +94,7 @@ namespace BCW.ConsoleGame.Models.Scenes
 
         private void setCommandEvents()
         {
-            foreach(var command in Commands.Where(c => c is INavigationCommand))
+            foreach (var command in Commands.Where(c => c is INavigationCommand))
             {
                 command.Action = () =>
                 {
@@ -106,5 +110,7 @@ namespace BCW.ConsoleGame.Models.Scenes
                 };
             }
         }
+    #endregion
+
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BCW.ConsoleGame.Models.Scenes
 {
-    public interface IScene
+    public interface IScene : IComposite
     {
         event EventHandler<GameEventArgs> GameMenuSelected;
         event EventHandler<NavigationEventArgs> Navigated;
