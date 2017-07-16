@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace BCW.ConsoleGame.Models.Characters
 {
-    public abstract class Monster : Composite, IMonster
+    public class Troll : Monster
     {
-        public int Health { get; set; }
-        public int Damage { get; set; }
+        public Troll()
+        {
+            items = new List<IComposite>();
+        }
     }
 }

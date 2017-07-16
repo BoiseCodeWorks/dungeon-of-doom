@@ -47,6 +47,7 @@ namespace BCW.ConsoleGame.JsonData
                 (
                     (string)s["Title"],
                     (string)s["Description"],
+                    (int)s["Difficulty"],
                     new MapPosition((int)s["MapPosition"]["X"], (int)s["MapPosition"]["Y"]),
                     (s["NavigationCommands"] as JArray).Select(c => new NavigationCommand
                     {

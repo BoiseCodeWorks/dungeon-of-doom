@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace BCW.ConsoleGame.Models.Characters
 {
-    public interface ICharacter : IComposite
+    public interface IMonster : IComposite
     {
+        int Health { get; set; }
+        int Damage { get; set; }
     }
 }

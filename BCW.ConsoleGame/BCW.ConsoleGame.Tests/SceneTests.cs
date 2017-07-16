@@ -44,6 +44,7 @@ namespace BCW.ConsoleGame.Tests
             constructedScene = new Scene(
                 "Test Scene",
                 "This is a test scene",
+                1,
                 new MapPosition(1, 1),
                 new List<ICommand>
                 {

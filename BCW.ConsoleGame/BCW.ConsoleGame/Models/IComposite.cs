@@ -12,7 +12,11 @@ namespace BCW.ConsoleGame.Models
         int Count { get; }
         void AddItem(IComposite item);
         void AddItem(string path, IComposite item);
+        void Clear();
         void RemoveItem(IComposite item);
+        void RemoveItem(string name);
+        void RemoveItem(string path, string name);
+        void RemoveItems(string path);
         void RemoveItem(string path, IComposite item);
         IComposite GetItem(string name);
         IList<IComposite> GetItems();

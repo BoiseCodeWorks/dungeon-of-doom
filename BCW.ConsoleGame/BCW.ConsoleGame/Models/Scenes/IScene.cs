@@ -19,6 +19,7 @@ namespace BCW.ConsoleGame.Models.Scenes
         string Description { get; set; }
         bool Visited { get; set; }
         MapPosition MapPosition { get; set; }
+        int Difficulty { get; set; }
 
         List<ICommand> Commands { get; set; }
 

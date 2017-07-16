@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BCW.ConsoleGame.Models.Scenes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BCW.ConsoleGame.Models.Characters
 {
-    public abstract class Monster : Composite, IMonster
+    public interface IMonsterFactory
     {
-        public int Health { get; set; }
-        public int Damage { get; set; }
+        IList<IMonster> CreateMonsters(IScene scene);
     }
 }

@@ -99,8 +99,14 @@
     <Compile Include="Events\GameEventArgs.cs" />
     <Compile Include="Events\NavigationEventArgs.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Models\Characters\ICharacter.cs" />
+    <Compile Include="Models\Characters\Dragon.cs" />
+    <Compile Include="Models\Characters\IMonster.cs" />
+    <Compile Include="Models\Characters\IMonsterFactory.cs" />
     <Compile Include="Models\Characters\Monster.cs" />
+    <Compile Include="Models\Characters\MonsterFactory.cs" />
+    <Compile Include="Models\Characters\Orc.cs" />
+    <Compile Include="Models\Characters\Zombie.cs" />
+    <Compile Include="Models\Characters\Troll.cs" />
     <Compile Include="Models\Commands\GameCommand.cs" />
     <Compile Include="Models\Commands\IGameCommand.cs" />
     <Compile Include="Models\Composite.cs" />
