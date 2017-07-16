@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\IDataProvider.cs" />
+    <Compile Include="Events\AttackEventArgs.cs" />
     <Compile Include="Events\GameEventArgs.cs" />
     <Compile Include="Events\NavigationEventArgs.cs" />
     <Compile Include="Game.cs" />
@@ -107,7 +108,9 @@
     <Compile Include="Models\Characters\Orc.cs" />
     <Compile Include="Models\Characters\Zombie.cs" />
     <Compile Include="Models\Characters\Troll.cs" />
+    <Compile Include="Models\Commands\AttackCommand.cs" />
     <Compile Include="Models\Commands\GameCommand.cs" />
+    <Compile Include="Models\Commands\IAttackCommand.cs" />
     <Compile Include="Models\Commands\IGameCommand.cs" />
     <Compile Include="Models\Composite.cs" />
     <Compile Include="Models\IComposite.cs" />

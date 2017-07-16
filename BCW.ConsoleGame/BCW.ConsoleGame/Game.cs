@@ -84,6 +84,11 @@ namespace BCW.ConsoleGame
             }
         }
 
+        private void playerAttacked(object sender, AttackEventArgs args)
+        {
+            args.Scene.Feedback = "You attacked the monsters!";
+        }
+
         private void subscribeToEvents()
         {
             foreach (var scene in Scenes)
@@ -91,6 +96,7 @@ namespace BCW.ConsoleGame
                 scene.UserInterface = UserInterface;
                 scene.GameMenuSelected += gameMenuSelected;
                 scene.Navigated += sceneNavigated;
+                scene.Attacked += playerAttacked;
             }
         }
 

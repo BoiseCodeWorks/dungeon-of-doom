@@ -13,6 +13,7 @@ namespace BCW.ConsoleGame.Models.Scenes
     {
         event EventHandler<GameEventArgs> GameMenuSelected;
         event EventHandler<NavigationEventArgs> Navigated;
+        event EventHandler<AttackEventArgs> Attacked;
 
         IUserInterface UserInterface { get; set; }
         string Title { get; set; }
@@ -20,6 +21,7 @@ namespace BCW.ConsoleGame.Models.Scenes
         bool Visited { get; set; }
         MapPosition MapPosition { get; set; }
         int Difficulty { get; set; }
+        string Feedback { get; set; }
 
         List<ICommand> Commands { get; set; }
 

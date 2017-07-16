@@ -37,19 +37,25 @@ namespace BCW.ConsoleGame.Models.Scenes
                 Commands.AddRange(collection);
             }
 
-            setCommandEvents();
-
             var monsters = MonsterFactory.Instance().CreateMonsters(this);
 
-            foreach(var monster in monsters)
+            if(monsters.Count > 0)
             {
-                AddItem("Monsters", monster);
+                Commands.Add(new AttackCommand { Keys = "A", Description = "Attack The Monsters" });
+
+                foreach (var monster in monsters)
+                {
+                    AddItem("Monsters", monster);
+                }
             }
+
+            setCommandEvents();
         }
 
         #region IScene Implementation
         public event EventHandler<GameEventArgs> GameMenuSelected;
         public event EventHandler<NavigationEventArgs> Navigated;
+        public event EventHandler<AttackEventArgs> Attacked;
 
         public IUserInterface UserInterface { get; set; }
         public string Title { get; set; }
@@ -57,29 +63,28 @@ namespace BCW.ConsoleGame.Models.Scenes
         public bool Visited { get; set; }
         public MapPosition MapPosition { get; set; }
         public int Difficulty { get; set; }
+        public string Feedback { get; set; }
 
         public List<ICommand> Commands { get; set; }
 
         public virtual void Enter()
         {
-            var monsterFactory = MonsterFactory.Instance();
             ICommand action = null;
-            string error = "";
 
-            while (action == null)
+            while (true)
             {
-                display(error);
+                display();
 
                 var choice = UserInterface.GetInput("Choose an action: ");
 
                 action = Commands.FirstOrDefault(c => c.Keys.ToLower() == choice.ToLower());
 
-                if (action == null) error = "Invalid Choice!";
+                if (action == null) Feedback = "Invalid Choice!";
                 else action.Action();
             }
         }
 
-        protected virtual void display(string error)
+        protected virtual void display()
         {
             UserInterface.Clear();
             UserInterface.Display("");
@@ -112,6 +117,13 @@ namespace BCW.ConsoleGame.Models.Scenes
                 UserInterface.Display($"There {isAre} {monsterText} in the room.");
             }
 
+            if(!String.IsNullOrEmpty(Feedback))
+            {
+                UserInterface.Display("");
+                UserInterface.Display(Feedback);
+                Feedback = "";
+            }
+
             UserInterface.Display("");
             UserInterface.Display("Actions");
             UserInterface.Display(new String('-', "Actions".Length));
@@ -125,11 +137,18 @@ namespace BCW.ConsoleGame.Models.Scenes
             }
 
             UserInterface.Display("");
-            if (error.Length > 0) UserInterface.Display(error);
         }
 
         private void setCommandEvents()
         {
+            foreach (var command in Commands.Where(c => c is IAttackCommand))
+            {
+                command.Action = () =>
+                {
+                    Attacked?.Invoke(this, new AttackEventArgs(this));
+                };
+            }
+
             foreach (var command in Commands.Where(c => c is INavigationCommand))
             {
                 command.Action = () =>

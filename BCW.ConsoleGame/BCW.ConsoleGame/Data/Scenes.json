@@ -23,7 +23,7 @@
     {
       "Title": "Room 1",
       "Description": "You're standing in a small empty room with a door on the south wall.",
-      "Difficulty": 4,
+      "Difficulty": 1,
       "MapPosition": {
         "X": 9,
         "Y": 4

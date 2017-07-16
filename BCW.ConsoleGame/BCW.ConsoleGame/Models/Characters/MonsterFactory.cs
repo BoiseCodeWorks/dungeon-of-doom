@@ -30,7 +30,7 @@ namespace BCW.ConsoleGame.Models.Characters
             var monsters = new List<IMonster>();
             var random = new Random();
             var countOdds = 0;
-            var countMin = 0;
+            var countMin = 1;
             var countMax = 0;
             var zombieOdds = 0;
             var orcOdds = 0;
@@ -44,7 +44,7 @@ namespace BCW.ConsoleGame.Models.Characters
             switch (scene.Difficulty)
             {
                 case 1:
-                    countOdds = 50;
+                    countOdds = 100;
                     zombieOdds = 100;
                     countMax = 2;
                     healthMin = 5;
@@ -92,7 +92,7 @@ namespace BCW.ConsoleGame.Models.Characters
                     break;
             }
 
-            if(countOdds <= random.Next(1, 100))
+            if (random.Next(1, 100) <= countOdds)
             {
                 for (var i = 0; i < random.Next(countMin, countMax); i++)
                 {
