@@ -57,6 +57,7 @@ namespace BCW.ConsoleGame.Models.Scenes
         public event EventHandler<NavigationEventArgs> Navigated;
         public event EventHandler<AttackEventArgs> Attacked;
 
+        public Game Game { get; set; }
         public IUserInterface UserInterface { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

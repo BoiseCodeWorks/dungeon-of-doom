@@ -1,0 +1,184 @@
+﻿{
+  "Types": [
+    {
+      "Name": "Zombie",
+      "Health": {
+        "Min": 5,
+        "Max": 10
+      },
+      "Damage": {
+        "Min": 1,
+        "Max": 4
+      },
+      "Odds": [
+        {
+          "Level": 1,
+          "Exist": 100,
+          "Count": {
+            "Min": 1,
+            "Max": 3
+          }
+        },
+        {
+          "Level": 2,
+          "Exist": 100,
+          "Count": {
+            "Min": 2,
+            "Max": 5
+          }
+        },
+        {
+          "Level": 3,
+          "Exist": 100,
+          "Count": {
+            "Min": 3,
+            "Max": 7
+          }
+        },
+        {
+          "Level": 4,
+          "Exist": 100,
+          "Count": {
+            "Min": 4,
+            "Max": 9
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Orc",
+      "Health": {
+        "Min": 7,
+        "Max": 12
+      },
+      "Damage": {
+        "Min": 3,
+        "Max": 6
+      },
+      "Odds": [
+        {
+          "Level": 1,
+          "Exist": 50,
+          "Count": {
+            "Min": 1,
+            "Max": 1
+          }
+        },
+        {
+          "Level": 2,
+          "Exist": 60,
+          "Count": {
+            "Min": 1,
+            "Max": 3
+          }
+        },
+        {
+          "Level": 3,
+          "Exist": 70,
+          "Count": {
+            "Min": 1,
+            "Max": 3
+          }
+        },
+        {
+          "Level": 4,
+          "Exist": 80,
+          "Count": {
+            "Min": 1,
+            "Max": 3
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Troll",
+      "Health": {
+        "Min": 10,
+        "Max": 15
+      },
+      "Damage": {
+        "Min": 5,
+        "Max": 10
+      },
+      "Odds": [
+        {
+          "Level": 1,
+          "Exist": 0,
+          "Count": {
+            "Min": 0,
+            "Max": 0
+          }
+        },
+        {
+          "Level": 2,
+          "Exist": 10,
+          "Count": {
+            "Min": 1,
+            "Max": 1
+          }
+        },
+        {
+          "Level": 3,
+          "Exist": 40,
+          "Count": {
+            "Min": 1,
+            "Max": 2
+          }
+        },
+        {
+          "Level": 4,
+          "Exist": 60,
+          "Count": {
+            "Min": 1,
+            "Max": 3
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Dragon",
+      "Health": {
+        "Min": 12,
+        "Max": 20
+      },
+      "Damage": {
+        "Min": 10,
+        "Max": 20
+      },
+      "Odds": [
+        {
+          "Level": 1,
+          "Exist": 0,
+          "Count": {
+            "Min": 0,
+            "Max": 0
+          }
+        },
+        {
+          "Level": 2,
+          "Exist": 0,
+          "Count": {
+            "Min": 0,
+            "Max": 0
+          }
+        },
+        {
+          "Level": 3,
+          "Exist": 10,
+          "Count": {
+            "Min": 1,
+            "Max": 1
+          }
+        },
+        {
+          "Level": 4,
+          "Exist": 25,
+          "Count": {
+            "Min": 1,
+            "Max": 1
+          }
+        }
+      ]
+    }
+  ]
+}

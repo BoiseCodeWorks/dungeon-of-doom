@@ -1,4 +1,5 @@
 ﻿using BCW.ConsoleGame.Models;
+using BCW.ConsoleGame.Models.Characters;
 using BCW.ConsoleGame.Models.Scenes;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace BCW.ConsoleGame.Data
     {
         MapPosition StartPosition { get; set; }
         List<IScene> Scenes { get; set; }
+        List<IMonsterType> MonsterTypes { get; set; }
 
         void SaveGameState();
     }
