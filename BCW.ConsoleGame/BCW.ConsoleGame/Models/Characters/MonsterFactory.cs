@@ -41,9 +41,19 @@ namespace BCW.ConsoleGame.Models.Characters
                     if (random.Next(1, 100) <= odds.Exist)
                     {
                         var health = random.Next(monsterType.HealthMin, monsterType.HealthMax);
+                        var agility = random.Next(monsterType.AgilityMin, monsterType.AgilityMax);
                         var damage = random.Next(monsterType.DamageMin, monsterType.DamageMax);
+                        var defense = random.Next(monsterType.DefenseMin, monsterType.DefenseMax);
+                        var vitality = random.Next(monsterType.VitalityMin, monsterType.VitalityMax);
 
-                        monsters.Add(new Monster() { Name = monsterType.Name, Health = health, Damage = damage });
+                        monsters.Add(new Monster() {
+                            Name = monsterType.Name,
+                            Health = health,
+                            Agility = agility,
+                            Damage = damage,
+                            Defense = defense,
+                            Vitality = vitality
+                        });
                     }
                 }
             }

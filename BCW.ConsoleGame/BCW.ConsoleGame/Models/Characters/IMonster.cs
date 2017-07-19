@@ -9,6 +9,12 @@ namespace BCW.ConsoleGame.Models.Characters
     public interface IMonster : IComposite
     {
         int Health { get; set; }
+        int Agility { get; set; }
         int Damage { get; set; }
+        int Defense { get; set; }
+        int Vitality { get; set; }
+
+        int Attack();
+        int Defend();
     }
 }

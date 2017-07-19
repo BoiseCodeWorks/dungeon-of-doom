@@ -53,8 +53,14 @@ namespace BCW.ConsoleGame.JsonData
                     (string)t["Name"],
                     (int)t["Health"]["Min"],
                     (int)t["Health"]["Max"],
+                    (int)t["Agility"]["Min"],
+                    (int)t["Agility"]["Max"],
                     (int)t["Damage"]["Min"],
                     (int)t["Damage"]["Max"],
+                    (int)t["Defense"]["Min"],
+                    (int)t["Defense"]["Max"],
+                    (int)t["Vitality"]["Min"],
+                    (int)t["Vitality"]["Max"],
                     (t["Odds"] as JArray).Select(o => new Odds
                         (
                             (int)o["Level"],

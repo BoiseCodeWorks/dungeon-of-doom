@@ -117,6 +117,10 @@ namespace BCW.ConsoleGame.Models.Scenes
 
                 UserInterface.Display($"There {isAre} {monsterText} in the room.");
             }
+            else
+            {
+                Commands = Commands.Where(c => !(c is IAttackCommand)).ToList();
+            }
 
             if(!String.IsNullOrEmpty(Feedback))
             {

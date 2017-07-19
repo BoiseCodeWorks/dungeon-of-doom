@@ -1,6 +1,7 @@
 ﻿using BCW.ConsoleGame.Data;
 using BCW.ConsoleGame.Events;
 using BCW.ConsoleGame.Models;
+using BCW.ConsoleGame.Models.Characters;
 using BCW.ConsoleGame.Models.Commands;
 using BCW.ConsoleGame.Models.Scenes;
 using BCW.ConsoleGame.User;
@@ -15,6 +16,8 @@ namespace BCW.ConsoleGame
 {
     public class Game
     {
+        private int playerHealth = 1;
+
         public IDataProvider DataProvider { get; set; }
         public IUserInterface UserInterface { get; set; }
         public List<IScene> Scenes { get; set; }
@@ -86,7 +89,76 @@ namespace BCW.ConsoleGame
 
         private void playerAttacked(object sender, AttackEventArgs args)
         {
-            args.Scene.Feedback = "You attacked the monsters!";
+            attackMonsters(args.Scene);
+            attackPlayer(args.Scene);
+        }
+
+        private void attackMonsters(IScene scene)
+        {
+            var didHitMonster = false;
+            var monsters = scene.GetItems("Monsters");
+
+            foreach (var item in monsters)
+            {
+                var monster = (IMonster)item;
+
+                var damage = monster.Defend();
+
+                if (damage > 0)
+                {
+                    didHitMonster = true;
+
+                    if (monster.Health == 0)
+                    {
+                        scene.Feedback = $"You killed a {monster.Name}!";
+
+                        // remove dead monsters from the scene
+                        scene.RemoveItem("Monsters", item);
+
+                        if (scene.GetItems("Monsters").Count == 0)
+                        {
+                            scene.Feedback += " There are no monsters left.";
+                        }
+                    }
+                    else
+                    {
+                        scene.Feedback = $"You hit a {monster.Name} and inflicted {damage} points of damage.";
+                    }
+
+                    break;
+                }
+            }
+
+            if (!didHitMonster)
+            {
+                scene.Feedback = $"You missed!";
+            }
+        }
+
+        private void attackPlayer(IScene scene)
+        {
+            var monsters = scene.GetItems("Monsters");
+
+            foreach(var item in monsters)
+            {
+                var monster = (IMonster)item;
+
+                var damage = monster.Attack();
+
+                if(damage > 0)
+                {
+                    playerHealth -= damage;
+
+                    scene.Feedback += $" You were hit by a {monster.Name} and took {damage} points of damage!";
+
+                    if (playerHealth <= 0)
+                    {
+                        scene.Feedback += " You died.";
+                    }
+
+                    break;
+                }
+            }
         }
 
         private void subscribeToEvents()

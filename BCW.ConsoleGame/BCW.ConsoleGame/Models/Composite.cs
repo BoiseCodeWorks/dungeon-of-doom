@@ -168,6 +168,8 @@ namespace BCW.ConsoleGame.Models
 
         private void prune(string path)
         {
+            return;
+
             var segments = path.Split('/').ToList();
 
             segments.Remove(segments.Last());

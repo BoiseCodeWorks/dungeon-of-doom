@@ -6,9 +6,21 @@
         "Min": 5,
         "Max": 10
       },
+      "Agility": {
+        "Min": 90,
+        "Max": 100
+      },
       "Damage": {
         "Min": 1,
         "Max": 4
+      },
+      "Defense": {
+        "Min": 0,
+        "Max": 10
+      },
+      "Vitality": {
+        "Min": 30,
+        "Max": 60
       },
       "Odds": [
         {
@@ -51,9 +63,21 @@
         "Min": 7,
         "Max": 12
       },
+      "Agility": {
+        "Min": 0,
+        "Max": 10
+      },
       "Damage": {
         "Min": 3,
         "Max": 6
+      },
+      "Defense": {
+        "Min": 1,
+        "Max": 5
+      },
+      "Vitality": {
+        "Min": 1,
+        "Max": 5
       },
       "Odds": [
         {
@@ -96,9 +120,21 @@
         "Min": 10,
         "Max": 15
       },
+      "Agility": {
+        "Min": 0,
+        "Max": 10
+      },
       "Damage": {
         "Min": 5,
         "Max": 10
+      },
+      "Defense": {
+        "Min": 1,
+        "Max": 5
+      },
+      "Vitality": {
+        "Min": 1,
+        "Max": 5
       },
       "Odds": [
         {
@@ -141,9 +177,21 @@
         "Min": 12,
         "Max": 20
       },
+      "Agility": {
+        "Min": 0,
+        "Max": 10
+      },
       "Damage": {
         "Min": 10,
         "Max": 20
+      },
+      "Defense": {
+        "Min": 1,
+        "Max": 5
+      },
+      "Vitality": {
+        "Min": 1,
+        "Max": 5
       },
       "Odds": [
         {
