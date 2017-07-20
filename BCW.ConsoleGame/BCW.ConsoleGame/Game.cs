@@ -16,7 +16,7 @@ namespace BCW.ConsoleGame
 {
     public class Game
     {
-        private int playerHealth = 1;
+        private IPlayer player;
 
         public IDataProvider DataProvider { get; set; }
         public IUserInterface UserInterface { get; set; }
@@ -31,6 +31,11 @@ namespace BCW.ConsoleGame
 
             subscribeToEvents();
 
+            player = new Player()
+            {
+                Health = 20
+            };
+
             gotoPosition(DataProvider.StartPosition);
         }
 
@@ -40,7 +45,7 @@ namespace BCW.ConsoleGame
 
             if (scene != null)
             {
-                scene.Enter();
+                scene.Enter(player);
             }
         }
 
@@ -48,6 +53,11 @@ namespace BCW.ConsoleGame
         {
             switch (args.Keys.ToLower())
             {
+                case "p":
+                    // pick up the treasure
+                    pickupTreasure(args.Scene);
+                    break;
+
                 case "x":
                     DataProvider.SaveGameState();
                     Environment.Exit(0);
@@ -83,7 +93,7 @@ namespace BCW.ConsoleGame
             if (nextScene != null)
             {
                 DataProvider.StartPosition = nextScene.MapPosition;
-                nextScene.Enter();
+                nextScene.Enter(player);
             }
         }
 
@@ -112,12 +122,25 @@ namespace BCW.ConsoleGame
                     {
                         scene.Feedback = $"You killed a {monster.Name}!";
 
+                        // if the monster has any treasure move it to the scene items
+                        var treasures = monster.GetItems("Treasures");
+
+                        if(treasures.Count > 0)
+                        {
+                            scene.Feedback += $"\nThe {monster.Name} dropped some treasure!";
+                        }
+
+                        foreach(var treasure in treasures)
+                        {
+                            scene.AddItem("Treasures", treasure);
+                        }
+
                         // remove dead monsters from the scene
                         scene.RemoveItem("Monsters", item);
 
                         if (scene.GetItems("Monsters").Count == 0)
                         {
-                            scene.Feedback += " There are no monsters left.";
+                            scene.Feedback += "\nThere are no monsters left.";
                         }
                     }
                     else
@@ -147,18 +170,32 @@ namespace BCW.ConsoleGame
 
                 if(damage > 0)
                 {
-                    playerHealth -= damage;
+                    player.Health -= damage;
 
-                    scene.Feedback += $" You were hit by a {monster.Name} and took {damage} points of damage!";
+                    scene.Feedback += $"\nYou were hit by a {monster.Name} and took {damage} points of damage!";
 
-                    if (playerHealth <= 0)
+                    if (player.Health <= 0)
                     {
-                        scene.Feedback += " You died.";
+                        player.Health = 0;
+                        scene.Feedback += "\nYou died.";
+                        scene.Commands = scene.Commands.Where(c => c is IGameCommand && c.Keys.ToLower() == "x").ToList();
                     }
 
                     break;
                 }
             }
+        }
+
+        private void pickupTreasure(IScene scene)
+        {
+            var treasures = scene.GetItems("Treasures");
+
+            foreach(var treasure in treasures)
+            {
+                player.AddItem("Treasures", treasure);
+            }
+
+            scene.RemoveItems("Treasures");
         }
 
         private void subscribeToEvents()

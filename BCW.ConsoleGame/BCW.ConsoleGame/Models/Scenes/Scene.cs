@@ -1,6 +1,7 @@
 ﻿using BCW.ConsoleGame.Events;
 using BCW.ConsoleGame.Models.Characters;
 using BCW.ConsoleGame.Models.Commands;
+using BCW.ConsoleGame.Models.Treasures;
 using BCW.ConsoleGame.User;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace BCW.ConsoleGame.Models.Scenes
 {
     public class Scene : Composite, IScene
     {
+        private IPlayer player;
+
         public Scene()
         {
             items = new List<IComposite>();
@@ -68,8 +71,10 @@ namespace BCW.ConsoleGame.Models.Scenes
 
         public List<ICommand> Commands { get; set; }
 
-        public virtual void Enter()
+        public virtual void Enter(IPlayer player)
         {
+            this.player = player;
+
             ICommand action = null;
 
             while (true)
@@ -122,11 +127,66 @@ namespace BCW.ConsoleGame.Models.Scenes
                 Commands = Commands.Where(c => !(c is IAttackCommand)).ToList();
             }
 
-            if(!String.IsNullOrEmpty(Feedback))
+            var treasures = GetItems("Treasures");
+            var pickupCommand = Commands.FirstOrDefault(c => c.Keys.ToLower() == "p");
+
+            if (treasures.Count > 0 && monsters.Count == 0)
+            {
+                var treasureText = "";
+
+                foreach (var item in treasures)
+                {
+                    var treasure = (ITreasure)item;
+
+                    treasureText += $"{treasure.Name} ({treasure.Value})\n";
+                }
+
+                UserInterface.Display("");
+                UserInterface.Display($"The room contains the following treasure:\n\n{treasureText}");
+
+                if (pickupCommand == null)
+                {
+                    pickupCommand = new AttackCommand { Keys = "P", Description = "Pickup Treasure" };
+
+                    pickupCommand.Action = () =>
+                    {
+                        GameMenuSelected?.Invoke(this, new GameEventArgs(this, pickupCommand.Keys));
+                    };
+
+                    Commands.Add(pickupCommand);
+                }
+            }
+            else
+            {
+                if (pickupCommand != null)
+                {
+                    Commands = Commands.Where(c => c.Keys.ToLower() != "p").ToList();
+                }
+            }
+
+            if (!String.IsNullOrEmpty(Feedback))
             {
                 UserInterface.Display("");
                 UserInterface.Display(Feedback);
                 Feedback = "";
+            }
+
+            UserInterface.Display("");
+            UserInterface.Display($"Your Health: {player.Health}");
+
+            var playerTreasures = player.GetItems("Treasures");
+            var playerTreasureText = "";
+
+            if (playerTreasures.Count > 0)
+            {
+                foreach (var item in playerTreasures)
+                {
+                    var treasure = (ITreasure)item;
+
+                    playerTreasureText += $"{treasure.Name} ({treasure.Value})\n";
+                }
+
+                UserInterface.Display($"Your Treasure:\n\n{playerTreasureText}");
             }
 
             UserInterface.Display("");

@@ -103,10 +103,12 @@
     <Compile Include="Models\Characters\IMonster.cs" />
     <Compile Include="Models\Characters\IMonsterFactory.cs" />
     <Compile Include="Models\Characters\IMonsterType.cs" />
+    <Compile Include="Models\Characters\IPlayer.cs" />
     <Compile Include="Models\Characters\Monster.cs" />
     <Compile Include="Models\Characters\MonsterFactory.cs" />
     <Compile Include="Models\Characters\MonsterType.cs" />
     <Compile Include="Models\Characters\Odds.cs" />
+    <Compile Include="Models\Characters\Player.cs" />
     <Compile Include="Models\Commands\AttackCommand.cs" />
     <Compile Include="Models\Commands\GameCommand.cs" />
     <Compile Include="Models\Commands\IAttackCommand.cs" />
@@ -120,6 +122,8 @@
     <Compile Include="Models\Scenes\IScene.cs" />
     <Compile Include="Models\Commands\NavigationCommand.cs" />
     <Compile Include="Models\Scenes\Scene.cs" />
+    <Compile Include="Models\Treasures\ITreasure.cs" />
+    <Compile Include="Models\Treasures\Treasure.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\ConsoleInterface.cs" />

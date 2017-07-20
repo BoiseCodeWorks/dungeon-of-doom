@@ -1,4 +1,5 @@
 ﻿using BCW.ConsoleGame.Events;
+using BCW.ConsoleGame.Models.Characters;
 using BCW.ConsoleGame.Models.Commands;
 using BCW.ConsoleGame.User;
 using System;
@@ -25,6 +26,6 @@ namespace BCW.ConsoleGame.Models.Scenes
 
         List<ICommand> Commands { get; set; }
 
-        void Enter();
+        void Enter(IPlayer player);
     }
 }

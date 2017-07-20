@@ -109,7 +109,7 @@ namespace BCW.ConsoleGame.Tests
         {
             mockUserInterface.Setup(ui => ui.GetInput("Choose an action: ")).Returns("x");
 
-            constructedScene.Enter();
+            constructedScene.Enter(null);
 
             mockUserInterface.Verify(ui => ui.Clear());
             mockUserInterface.Verify(ui => ui.Display("Test Scene"));
@@ -121,7 +121,7 @@ namespace BCW.ConsoleGame.Tests
         {
             mockUserInterface.Setup(ui => ui.GetInput("Choose an action: ")).Returns("x");
 
-            constructedScene.Enter();
+            constructedScene.Enter(null);
 
             mockUserInterface.Verify(ui => ui.Display("n = Go North"));
             mockUserInterface.Verify(ui => ui.Display("x = Quit"));
